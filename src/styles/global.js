@@ -2,6 +2,11 @@ import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
 
+  :root {
+    --bg: #f2f2f2;
+    --text-color: #222;
+    --black: #24292e;
+  }
   *,
   *::before,
   *::after {
@@ -15,12 +20,12 @@ export default createGlobalStyle`
   }
 
   body {
-    background-color: #f2f2f2;
+    background-color: var(--bg);
     -webkit-font-smoothing: antialiased !important;
   }
 
   body, input, button {
-    color: #222;
+    color: var(--text-color);
     font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
   }
