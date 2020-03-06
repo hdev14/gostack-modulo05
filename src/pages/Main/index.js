@@ -12,6 +12,20 @@ export default class Main extends React.Component {
     loading: false,
   };
 
+  componentDidMount() {
+    const repos = JSON.parse(localStorage.getItem('repos'));
+    if (repos) {
+      this.setState({ repos });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { repos } = this.state;
+    if (prevState.repos !== repos) {
+      localStorage.setItem('repos', JSON.stringify(repos));
+    }
+  }
+
   handleSubmit = async e => {
     e.preventDefault();
 
