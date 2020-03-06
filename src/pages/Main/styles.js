@@ -66,3 +66,38 @@ export const SubmitButton = styled.button.attrs(props => ({
     }
   }
 `;
+
+export const List = styled.ul`
+  list-style: none;
+  margin: 20px 0;
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  border-radius: 5px;
+  display: ${props => !props.repo && 'none'};
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+
+    & + li {
+      border-top: 1px solid #eee;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--text-color);
+      padding: 5px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 3px;
+      transition: color 0.2s ease-out, background-color 0.2s ease-out;
+
+      &:hover {
+        border-color: var(--black);
+        color: white;
+        background-color: var(--black);
+      }
+    }
+  }
+`;

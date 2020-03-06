@@ -6,6 +6,7 @@ export default createGlobalStyle`
     --bg: #f2f2f2;
     --text-color: #222;
     --black: #24292e;
+    --border-color: #d1d5da;
   }
   *,
   *::before,
