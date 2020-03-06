@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FaCircleNotch } from 'react-icons/fa';
 
 import api from '../../services/api';
+
+import Container from '../../styles/components/Container';
+import { Loading, Owner } from './styles';
 
 export default class Repository extends React.Component {
   static propTypes = {
@@ -41,6 +45,23 @@ export default class Repository extends React.Component {
 
   render() {
     const { repo, issues, loading } = this.state;
-    return <h1>Repositório</h1>;
+
+    if (loading) {
+      return (
+        <Loading>
+          <FaCircleNotch />
+          <h1>carregando</h1>
+        </Loading>
+      );
+    }
+    return (
+      <Container>
+        <Owner>
+          <img src={repo.owner.avatar_url} alt={repo.owner.login} />
+          <h1>{repo.name}</h1>
+          <p>{repo.description}</p>
+        </Owner>
+      </Container>
+    );
   }
 }
