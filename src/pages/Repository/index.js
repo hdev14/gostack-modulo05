@@ -13,6 +13,12 @@ export default class Repository extends React.Component {
     match: PropTypes.shape({
       params: PropTypes.shape({
         repo: PropTypes.string,
+        issues: PropTypes.array,
+        loading: PropTypes.bool,
+        issuePages: PropTypes.shape({
+          next: PropTypes.number,
+          last: PropTypes.number,
+        }),
       }),
     }).isRequired,
   };
@@ -21,6 +27,10 @@ export default class Repository extends React.Component {
     repo: {},
     issues: [],
     loading: true,
+    issuePages: {
+      next: 1,
+      last: 1,
+    },
   };
 
   async componentDidMount() {
@@ -29,23 +39,27 @@ export default class Repository extends React.Component {
 
     const [repo, issues] = await Promise.all([
       api.get(`/repos/${repoName}`),
-      api.get(`/repos/${repoName}/issues`, {
-        params: {
-          state: 'open',
-          per_page: 5,
-        },
-      }),
+      api.get(`/repos/${repoName}/issues`),
     ]);
+
+    const regexpPage = RegExp(/page=(\d+).*$/);
+    const [linkNextPage, linkLastPage] = issues.headers.link.split(',');
+    const numberNextPage = linkNextPage.match(regexpPage)[1];
+    const numberLastPage = linkLastPage.match(regexpPage)[1];
 
     this.setState({
       repo: repo.data,
       issues: issues.data,
       loading: false,
+      issuePages: {
+        next: numberNextPage,
+        last: numberLastPage,
+      },
     });
   }
 
   render() {
-    const { repo, issues, loading } = this.state;
+    const { repo, issues, loading, issuePages } = this.state;
 
     if (loading) {
       return (
