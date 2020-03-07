@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaCircleNotch } from 'react-icons/fa';
+import { FaCircleNotch, FaChevronLeft } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
 
 import Container from '../../styles/components/Container';
-import { Loading, Owner } from './styles';
+import { Loading, Owner, IssueList } from './styles';
 
 export default class Repository extends React.Component {
   static propTypes = {
@@ -57,10 +58,32 @@ export default class Repository extends React.Component {
     return (
       <Container>
         <Owner>
+          <Link to="/">
+            <FaChevronLeft /> Voltar
+          </Link>
           <img src={repo.owner.avatar_url} alt={repo.owner.login} />
           <h1>{repo.name}</h1>
           <p>{repo.description}</p>
         </Owner>
+
+        <IssueList>
+          {issues.map(issue => (
+            <li key={String(issue.id)}>
+              <img src={issue.user.avatar_url} alt={issue.user.login} />
+              <div>
+                <strong>
+                  <a href={issue.html_url} title={issue.title}>
+                    {issue.title}
+                  </a>
+                  {issue.labels.map(label => (
+                    <span key={String(label.id)}>{label.name}</span>
+                  ))}
+                </strong>
+                <small>{issue.user.login}</small>
+              </div>
+            </li>
+          ))}
+        </IssueList>
       </Container>
     );
   }
