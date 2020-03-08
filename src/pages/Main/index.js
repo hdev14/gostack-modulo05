@@ -38,7 +38,7 @@ export default class Main extends React.Component {
     try {
       const { newRepo, repos } = this.state;
 
-      if (repos.find(repo => repo.name == newRepo)) {
+      if (repos.find(repo => repo.name === newRepo)) {
         throw new Error('Repositório duplicado');
       }
 
