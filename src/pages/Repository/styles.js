@@ -24,6 +24,9 @@ export const Owner = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
 
   a {
     align-self: flex-start;
@@ -31,7 +34,7 @@ export const Owner = styled.header`
     align-items: center;
     text-decoration: none;
     color: var(--text-color);
-    padding: 10px;
+    padding: 10px 0;
     font-weight: bold;
 
     svg {
@@ -58,10 +61,6 @@ export const Owner = styled.header`
 `;
 
 export const IssueList = styled.ul`
-  padding-top: 30px;
-  margin-top: 30px;
-  border-top: 1px solid var(--border-color);
-
   li {
     display: flex;
     align-items: center;
@@ -114,6 +113,49 @@ export const IssueList = styled.ul`
     small {
       font-size: 0.8rem;
       color: var(--text-color);
+    }
+  }
+`;
+
+export const IssueFilter = styled.select`
+  margin-bottom: 20px;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  width: 80px;
+  outline: none;
+  padding: 2px 5px;
+`;
+
+export const Pagination = styled.div`
+  margin-top: 20px;
+  padding: 20px 0 10px 0;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+
+  svg {
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    fill: gray;
+    padding: 5px;
+    transition: background-color 0.2s ease-out, fill 0.2s ease-out;
+
+    &:hover {
+      background-color: var(--black);
+      fill: white;
+    }
+
+    &[disabled] {
+      cursor: not-allowed;
+      background-color: lightgray;
+
+      &:hover {
+        fill: gray;
+      }
     }
   }
 `;
