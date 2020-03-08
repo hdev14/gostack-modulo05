@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import loading from '../../styles/animations/loading';
 
@@ -8,7 +8,9 @@ export const Form = styled.form`
 
   input {
     flex: 1;
-    border: 1px solid silver;
+    color: ${props =>
+      props.error ? 'rgba(255, 0, 0, 0.7)' : 'var(--text-color)'};
+    border: 1px solid ${props => (props.error ? 'red' : 'silver')};
     border-radius: 5px;
     padding: 10px 15px;
     outline: none;
@@ -72,4 +74,15 @@ export const List = styled.ul`
       }
     }
   }
+`;
+
+export const Alert = styled.span`
+  display: block;
+  margin-top: 10px;
+  border-radius: 5px;
+  width: 100%;
+  background-color: lightyellow;
+  padding: 5px 10px;
+  color: #555;
+  font-size: 0.8rem;
 `;

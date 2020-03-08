@@ -5,13 +5,16 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import Container from '../../styles/components/Container';
-import { Form, SubmitButton, List } from './styles';
+import { Form, SubmitButton, List, Alert } from './styles';
 
 export default class Main extends React.Component {
   state = {
     newRepo: '',
     repos: [],
     loading: false,
+    error: false,
+    alert: false,
+    messageAlert: 'asdasd',
   };
 
   componentDidMount() {
@@ -30,17 +33,38 @@ export default class Main extends React.Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-
     this.setState({ loading: true });
 
-    const { newRepo, repos } = this.state;
-    const repo = await api.get(`repos/${newRepo}`);
+    try {
+      const { newRepo, repos } = this.state;
 
-    this.setState({
-      repos: [...repos, { name: repo.data.full_name }],
-      newRepo: '',
-      loading: false,
-    });
+      if (repos.find(repo => repo.name === newRepo)) {
+        throw new Error('Repositório duplicado');
+      }
+
+      const repo = await api.get(`repos/${newRepo}`);
+
+      this.setState({
+        repos: [...repos, { name: repo.data.full_name }],
+        newRepo: '',
+        loading: false,
+        error: false,
+        alert: false,
+      });
+    } catch (err) {
+      if (err.message === 'Repositório duplicado') {
+        this.setState({
+          loading: false,
+          alert: true,
+          messageAlert: err.message,
+        });
+      } else {
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      }
+    }
   };
 
   handleInputChange = e => {
@@ -50,7 +74,7 @@ export default class Main extends React.Component {
   };
 
   render() {
-    const { newRepo, repos, loading } = this.state;
+    const { newRepo, repos, loading, error, alert, messageAlert } = this.state;
     return (
       <Container>
         <h1>
@@ -58,7 +82,7 @@ export default class Main extends React.Component {
           Repositórios
         </h1>
 
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} error={error}>
           <input
             type="text"
             placeholder="Adicione um repositório"
@@ -73,6 +97,8 @@ export default class Main extends React.Component {
             )}
           </SubmitButton>
         </Form>
+
+        {alert && <Alert id="alert">{messageAlert}</Alert>}
 
         <List repo={repos.length > 0}>
           {repos.map(repo => (
